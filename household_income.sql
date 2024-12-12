@@ -59,7 +59,7 @@ UPDATE ushouseholdincome_staging
 SET state_name = 'Alabama'
 WHERE state_name = 'alabama';
 
-## NULLs Place
+## Deal with NULLs in Place column
 
 -- Find nulls in places
 SELECT *
