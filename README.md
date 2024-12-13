@@ -76,7 +76,6 @@ WHERE Type = 'Boroughs';
   ```
   
   ![Analysis](<sql_results/cleaning3_Standardizing_State_Names.png>)
-  ![Analysis](<sql_results/cleaning5_Standardize_Type_Name.png>)
 
  ## The analysis
  
