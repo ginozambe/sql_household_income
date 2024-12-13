@@ -17,6 +17,67 @@ This project involves cleaning and preparing a household income dataset, structu
 - **Visual Studio Code**
 - **Git & Github**
 
+ ## The preparation
+
+ ### Rename Column
+
+  ```SQL
+-- Alter column table name
+ALTER TABLE ushouseholdincome_statistics_staging RENAME COLUMN `ï»¿id` TO `id`;
+ ```
+ 
+ ![Analysis](<sql_results/cleaning1_column_name.png>)
+
+ ### Remove Duplicates
+ 
+   ```SQL
+  -- delete duplicate rows for table 1
+DELETE FROM ushouseholdincome_staging
+WHERE row_id IN (
+	SELECT row_id
+	FROM (
+		SELECT id, row_id, ROW_NUMBER() OVER(PARTITION BY id ORDER BY id) as count
+		FROM ushouseholdincome_staging) AS duplicates
+		WHERE count > 1);
+-- identify duplicates for table 2
+-- NO DUPLICATES
+SELECT id, COUNT(id)
+FROM ushouseholdincome_staging
+GROUP BY id
+HAVING COUNT(id) > 1;
+  ```
+  
+  ![Analysis](<sql_results/cleaning2_removing_duplicates.png>)
+ 
+ ### Deal with Nulls
+ 
+   ```SQL
+UPDATE ushouseholdincome_staging
+SET Place = 'Autaugaville'
+WHERE County = 'Autauga County' AND City = 'Vinemont';
+  ```
+ 
+   ![Analysis](<sql_results/cleaning4_dealing_with_nulls.png>)
+
+ ### Standardise Data
+ 
+   ```SQL
+-- Update state names
+UPDATE ushouseholdincome_staging
+SET state_name = 'Georgia'
+WHERE state_name = 'georia';
+UPDATE ushouseholdincome_staging
+SET state_name = 'Alabama'
+WHERE state_name = 'alabama';
+-- Standardise type names
+UPDATE ushouseholdincome_staging
+SET Type = 'Borough'
+WHERE Type = 'Boroughs';
+  ```
+  
+  ![Analysis](<sql_results/cleaning3_Standardizing_State_Names.png>)
+  ![Analysis](<sql_results/cleaning5_Standardize_Type_Name.png>)
+
  ## The analysis
  
  ### Query1
